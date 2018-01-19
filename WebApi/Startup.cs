@@ -25,7 +25,7 @@ namespace WebApi
             //AutomapperConfiguration.Configure();
 
             Mappings.RegisterMappings();
-
+           
 
         }
 
@@ -37,11 +37,11 @@ namespace WebApi
             services.AddMvc();
             services.AddCors();
             services.AddSingleton<IEngEstService, EngEstService>();
-            services.AddAutoMapper(typeof(Startup));
+            //services.AddAutoMapper(typeof(Startup));
            // services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 
-            Mappings.RegisterMappings();
+           // Mappings.RegisterMappings();
             //services.AddSingleton<IGenericTranslateSerivce<EngEstService>, EngEstService>;
             //services.add
             //AutomapperConfiguration.Configure();
