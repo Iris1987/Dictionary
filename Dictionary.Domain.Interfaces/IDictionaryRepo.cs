@@ -7,7 +7,7 @@ using Dictionary.Domain.Core;
 
 namespace Dictionary.Domain.Interfaces
 {
-   public interface IDictionaryRepo<TEntity> where TEntity: class
+    public interface IDictionaryRepo<TEntity> where TEntity : class
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetByID(int id);
@@ -15,7 +15,7 @@ namespace Dictionary.Domain.Interfaces
         void Update(TEntity item);
         void Delete(int id);
         //void Save();
-
+    }
 
 
 
@@ -36,7 +36,7 @@ namespace Dictionary.Domain.Interfaces
         // Task Delete(int id);
         // void Save();
 
-    }
+    
     ///with generic repository
     //public interface IDictionaryRepository<T> where T : class
     //{

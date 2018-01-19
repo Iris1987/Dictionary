@@ -27,7 +27,8 @@ namespace Dictionary.Infrastructure.Data
         //        optionsBuilder.UseSqlServer(@"Server=mail.vk.edu.ee\SQLEXPRESS;Database=db_Elonen; user id=t143264;password=t143264");
         //    }
         //}
-        public Context(string connectionstring) { }
+        //public Context(string connectionstring) { }
+        public Context() { }
         public Context(DbContextOptions<Context> options) : base(options)
 
         { } //NB!! The constructor above will allow configuration to be passed into the context by dependency injection.
@@ -126,7 +127,10 @@ namespace Dictionary.Infrastructure.Data
 
                 entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
 
-                entity.Property(e => e.Category).HasColumnName("id_category");
+                entity.Property(e => e.categoryID).HasColumnName("id_category");
+                //entity.HasOne(e => e.Category).WithMany(o => o.Subcategories); .HasColumnName("id_category");
+
+                
 
                 entity.Property(e => e.Subcategoryname)
                     .IsRequired()
@@ -135,10 +139,13 @@ namespace Dictionary.Infrastructure.Data
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Subcategories)
-                    .HasForeignKey(d => d.Category)
+                    .HasForeignKey(d => d.categoryID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_category_subcategory");
             });
+
+
+
 
             modelBuilder.Entity<TranslEngEst>(entity =>
             {

@@ -9,6 +9,7 @@ using Dictionary.BLL.DTO;
 using Dictionary.BLL.Services;
 using Dictionary.Domain.Interfaces;
 using Dictionary.Domain.Core;
+using Dictionary.Infrastructure.Data.UnitOfWork;
 
 namespace WebApi.Controllers
 {
@@ -16,7 +17,8 @@ namespace WebApi.Controllers
     [Route("api/EngEst")]
     public class EngEstController: Controller
     {
-      
+
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
 
         private readonly IEngEstService tService;
@@ -25,11 +27,11 @@ namespace WebApi.Controllers
 
         private readonly IMapper mapper;
 
-        private readonly IUnitOfWork uow;
+        //private readonly IUnitOfWork uow;
 
-        public EngEstController(IMapper mapper, IUnitOfWork uow, IEngEstService tService)
+        public EngEstController(IMapper mapper,  IEngEstService tService)
         {
-            this.uow = uow;
+          //  this.uow = uow;
             this.mapper = mapper;
             this.tService = tService;
 
@@ -68,32 +70,32 @@ namespace WebApi.Controllers
 
 
         [HttpGet(Name = "GetAll")]
-        public IActionResult GetAll()
+        public IEnumerable<EngEstDTO> GetAll()
         {
             var xx = tService.GetAll();
-            var xxx = uow.TranslEngEsts.GetAll();
-            //var yy = mapper.Map<TranslEngEst, EngEstDTO>();
+           // var xxx = uow.TranslEngEsts.GetAll();
+           // var yy = mapper.Map<TranslEngEst, EngEstDTO>(xx);
 
             
 
-            return Ok(mapper.Map<IEnumerable<EngEstDTO>>(xxx)); 
+            return mapper.Map<IEnumerable<EngEstDTO>>(xx); 
 
         }
 
 
-        // GET: api/EngEst
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //// GET: api/EngEst
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
-        // GET: api/EngEst/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET: api/EngEst/5
+        //[HttpGet("{id}", Name = "Get")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
         
         // POST: api/EngEst
         [HttpPost]

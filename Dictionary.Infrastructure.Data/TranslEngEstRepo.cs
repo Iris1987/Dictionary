@@ -9,21 +9,24 @@ using System.Linq.Expressions;
 
 namespace Dictionary.Infrastructure.Data
 {
-    public class TranslEngEstRepo:IDictionaryRepo<TranslEngEst>,ISearch<TranslEngEst>
+    public class TranslEngEstRepo: DbContext, IDictionaryRepo<TranslEngEst>,ISearch<TranslEngEst>
     {
-        private DbSet<TranslEngEst> item;
-        private Context db;
+        //private DbSet<TranslEngEst> item;
+        private Context Context;
+        private DbSet<TranslEngEst> DbSet { get; set; }
 
         public TranslEngEstRepo(Context context)
         {
-            this.db = context;
+            this.Context = context;
+            this.DbSet = context.Set<TranslEngEst>();
         }
 
         public void Delete(int id)
         {
-            TranslEngEst translengEst = db.TranslEngEsts.Find(id);
+
+            TranslEngEst translengEst = DbSet.Find(id);
             if (translengEst != null)
-                db.TranslEngEsts.Remove(translengEst);
+                DbSet.Remove(translengEst);
         }
 
         //public void Save()
@@ -31,49 +34,52 @@ namespace Dictionary.Infrastructure.Data
         //    db.SaveChanges();
         //}
 
-        private bool disposed = false;
+        //private bool disposed = false;
 
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    db.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
+        //public virtual void Dispose(bool disposing)
+        //{
+        //    if (!this.disposed)
+        //    {
+        //        if (disposing)
+        //        {
+        //            dbSet.Dispose();
+        //        }
+        //    }
+        //    this.disposed = true;
+        //}
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
 
         public IEnumerable<TranslEngEst> GetAll()
         {
-            return db.TranslEngEsts.ToList();
+            return DbSet.ToList();
         }
 
         public TranslEngEst GetByID(int id)
         {
-            return db.TranslEngEsts.Find(id);
+            return DbSet.Find(id);
         }
 
         public void Create(TranslEngEst item)
         {
-            db.TranslEngEsts.Add(item);
+            DbSet.Add(item);
+            
         }
 
         public void Update(TranslEngEst item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            DbSet.Attach(item);
+            Context.Entry(item).State = EntityState.Modified;
+              
         }
 
         public IEnumerable<TranslEngEst> Find(Expression<Func<TranslEngEst, bool>> predicate)
         {
-            return db.Set<TranslEngEst>().Where(predicate);
+            yield return DbSet.Find(predicate);
         }
     }
 }

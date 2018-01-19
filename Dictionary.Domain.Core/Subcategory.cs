@@ -17,6 +17,7 @@ namespace Dictionary.Domain.Core
         public int IdSubcategory { get; set; }
         public string Subcategoryname { get; set; }
         public Category Category { get; set; }
+        public int categoryID { get; set; }
 
         public ICollection<TranslEngEst> TranslEngEst { get; set; }
         public ICollection<TranslEngRus> TranslEngRus { get; set; }

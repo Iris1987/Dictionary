@@ -9,7 +9,7 @@ namespace Dictionary.Infrastructure.Data.UnitOfWork
     public class UnitOfWork: IUnitOfWork
     {
 
-        private Context db; //= new Context();
+        private  Context db = new Context();
         private CategoryRepo cat;
         private SubcategoryRepo sub;
         private EngLangRepo eng;
@@ -21,14 +21,14 @@ namespace Dictionary.Infrastructure.Data.UnitOfWork
         private PartOfSpeechRepo part;
 
 
-        public UnitOfWork(string connectionstring)
-        {
+        //public UnitOfWork(Context db)
+        //{
 
-            db = new Context(connectionstring);
+        //    this.db = db; ;
 
-        }
+        //}
 
-        
+
         public IDictionaryRepo<Subcategory> Subcategories
         {
             get
@@ -37,7 +37,7 @@ namespace Dictionary.Infrastructure.Data.UnitOfWork
                 {
                     sub = new SubcategoryRepo(db);
                 }
-                return sub;
+                return  sub;
             }
         }
 

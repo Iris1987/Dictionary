@@ -13,6 +13,10 @@ using Dictionary.BLL.DTO;
 using Dictionary.BLL.Services;
 using Dictionary.Infrastructure.Data.UnitOfWork;
 using Dictionary.Domain.Interfaces;
+using Dictionary.Domain.Core;
+using Dictionary.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApi
 {
@@ -24,7 +28,7 @@ namespace WebApi
 
             //AutomapperConfiguration.Configure();
 
-            Mappings.RegisterMappings();
+           //Mappings.RegisterMappings();
            
 
         }
@@ -34,14 +38,33 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var con = @"Server=mail.vk.edu.ee\SQLEXPRESS;Database=db_Elonen; user id=t143264;password=t143264";
+
+            //services.AddDbContext<Context>(options => options.UseSqlServer(con));
+
+            services.AddDbContext<Context>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
             services.AddCors();
             services.AddSingleton<IEngEstService, EngEstService>();
-            //services.AddAutoMapper(typeof(Startup));
-           // services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddSingleton<IUnitOfWork,UnitOfWork>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddTransient<IUnitOfWork,UnitOfWork>();
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutomapperConfiguration());
+            });
+
+            var mapper = config.CreateMapper();
 
 
-           // Mappings.RegisterMappings();
+
+
+
+
             //services.AddSingleton<IGenericTranslateSerivce<EngEstService>, EngEstService>;
             //services.add
             //AutomapperConfiguration.Configure();

@@ -9,18 +9,22 @@ namespace Dictionary.BLL.DTO
 {
     public  class AutomapperConfiguration: Profile, IProfile
     {
-        
-       
-            public AutomapperConfiguration()
-        {
-            
+
+
+        public AutomapperConfiguration()
+        : this("MyProfile")
+    {
+            }
+        protected AutomapperConfiguration(string profilename)
+            :base(profilename)
+        { 
             CreateMap<TranslEngEst, EngEstDTO>()
             .ForMember(des => des.ID, x => x.MapFrom(src => src.IdTranslation))
-            .ForPath(des => des.PartOfSpeech, x => x.MapFrom(src => src.PartOfSpeech.Partname))
-            .ForPath(des => des.Subcategory, x => x.MapFrom(src => src.Subcategory.Subcategoryname))
-            .ForPath(des => des.Category, x => x.MapFrom(src => src.Subcategory.Category.Categoryname))
-            .ForPath(des => des.EngWord, x => x.MapFrom(src => src.EngWord.Word))
-            .ForPath(des => des.EstWord, x => x.MapFrom(src => src.EstWord.Word));//.ReverseMap();
+            .ForMember(des => des.PartOfSpeech, x => x.MapFrom(src => src.PartOfSpeech.Partname))
+            .ForMember(des => des.Subcategory, x => x.MapFrom(src => src.Subcategory.Subcategoryname))
+            .ForMember(des => des.Category, x => x.MapFrom(src => src.Subcategory.Category.Categoryname))
+            .ForMember(des => des.EngWord, x => x.MapFrom(src => src.EngWord.Word))
+            .ForMember(des => des.EstWord, x => x.MapFrom(src => src.EstWord.Word));//.ReverseMap();
 
             CreateMap<EngEstDTO, TranslEngEst>()
             .ForMember(des => des.IdTranslation, x => x.MapFrom(src => src.ID))
