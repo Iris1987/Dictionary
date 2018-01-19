@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+//using Dictionary.Domain.Core;
 
 namespace Dictionary.BLL.DTO
 {
@@ -16,5 +17,11 @@ namespace Dictionary.BLL.DTO
         public string Category  { get; set; }
         public string PartOfSpeech { get; set; }
 
+        public EngEstDTO()
+        { }
+        //public EngEstDTO(TranslEngEst domainObject)
+        //{
+        //    this.prop = domainObject.getProp();
+        //}
     }
 }

@@ -16,5 +16,8 @@ namespace Dictionary.BLL.DTO
         public string Category { get; set; }
         public string PartOfSpeech { get; set; }
 
+
+        public RusEstDTO()
+        { }
     }
 }

@@ -10,7 +10,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using Dictionary.BLL.DTO;
-
+using Dictionary.BLL.Services;
+using Dictionary.Infrastructure.Data.UnitOfWork;
+using Dictionary.Domain.Interfaces;
 
 namespace WebApi
 {
@@ -20,7 +22,9 @@ namespace WebApi
         {
             Configuration = configuration;
 
-            AutomapperConfiguration.Configure();
+            //AutomapperConfiguration.Configure();
+
+            Mappings.RegisterMappings();
 
 
         }
@@ -32,9 +36,27 @@ namespace WebApi
         {
             services.AddMvc();
             services.AddCors();
-            
-           
+            services.AddSingleton<IEngEstService, EngEstService>();
+            services.AddAutoMapper(typeof(Startup));
+           // services.AddScoped<IUnitOfWork,UnitOfWork>();
+
+
+            Mappings.RegisterMappings();
+            //services.AddSingleton<IGenericTranslateSerivce<EngEstService>, EngEstService>;
+            //services.add
+            //AutomapperConfiguration.Configure();
+
+            //mapper, test
+
+            //var config = new AutoMapper.MapperConfiguration(c =>
+            //{ c.AddProfile(new AutomapperConfiguration()); });
+
+            //var mapper = config.CreateMapper();
+            //services.AddSingleton(mapper);
+
         }
+
+        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -43,7 +65,7 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+           
             app.UseMvc();
         }
     }

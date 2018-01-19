@@ -5,17 +5,82 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Dictionary.BLL.DTO;
+using Dictionary.BLL.Services;
+using Dictionary.Domain.Interfaces;
+using Dictionary.Domain.Core;
 
 namespace WebApi.Controllers
 {
-    
-
-
     [Produces("application/json")]
     [Route("api/EngEst")]
-    public class EngEstController : Controller
+    public class EngEstController: Controller
     {
-        
+      
+
+
+        private readonly IEngEstService tService;
+        //private readonly IGenGetAllSerivce<EngEstDTO> getAll;
+
+
+        private readonly IMapper mapper;
+
+        private readonly IUnitOfWork uow;
+
+        public EngEstController(IMapper mapper, IUnitOfWork uow, IEngEstService tService)
+        {
+            this.uow = uow;
+            this.mapper = mapper;
+            this.tService = tService;
+
+        }
+
+        //IEnumerable<TranslEngEst> GetAll();
+        //TranslEngEst GetByID(int id);
+        //IEnumerable<TranslEngEst> Find(string word);
+        //void Create(TranslEngEst item);
+        //void Update(TranslEngEst item);
+        //void Delete(int id);
+
+
+
+            //ne znaju kakoj iz dvuh pravelnyj
+
+        [HttpGet("{id}", Name = "GetById")]
+        public EngEstDTO GetById(int id)
+        {
+            var so = tService.GetByID(id);
+            var soso = mapper.Map< TranslEngEst,EngEstDTO> (so);
+            return soso;
+
+        }
+
+        //[HttpGet("{id}", Name = "Get")]
+        //public EngEstDTO GetByID(int id)
+        //{
+        //    var xxx = tService.GetByID(id);
+        //    var yy = uow.TranslEngEsts.GetByID(id);// Where(xx=>xx.ID=id).Single();
+        //    var model = mapper.Map<TranslEngEst, EngEstDTO>(xxx);
+
+        //    return model;
+
+        //}
+
+
+        [HttpGet(Name = "GetAll")]
+        public IActionResult GetAll()
+        {
+            var xx = tService.GetAll();
+            var xxx = uow.TranslEngEsts.GetAll();
+            //var yy = mapper.Map<TranslEngEst, EngEstDTO>();
+
+            
+
+            return Ok(mapper.Map<IEnumerable<EngEstDTO>>(xxx)); 
+
+        }
+
+
         // GET: api/EngEst
         [HttpGet]
         public IEnumerable<string> Get()
@@ -27,26 +92,39 @@ namespace WebApi.Controllers
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
-            return "x" ;
+            return "value";
         }
         
         // POST: api/EngEst
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Create([FromBody] EngEstDTO dto )
+        //public void Post([FromBody]string value)
         {
+            var model = mapper.Map<TranslEngEst>(dto);
+            if (model == null) return NotFound();
+            
+            return Ok(model);//mapper.Map<TranslEngEst, EngEstDTO>(xx);
+
         }
         
-        // PUT: api/EngEst/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+
+
+
+        //// PUT: api/EngEst/5
+        //[HttpPut("{id}")]
+        //public void Update(EngEstDTO value)
+        //{
+        //    var xx = uow.TranslEngEsts.Create(value);
+        //    var yy = tService.Update());
+        //    var model = mapper.Map<TranslEngEst, EngEstDTO>(xx);
+
+        //}
         
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}",Name ="Delete")]
         public void Delete(int id)
         {
-            
+            tService.Delete(id);
         }
     }
 }

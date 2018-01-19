@@ -11,7 +11,7 @@ namespace Dictionary.Infrastructure.Data
 {
     public class TranslEngEstRepo:IDictionaryRepo<TranslEngEst>,ISearch<TranslEngEst>
     {
-
+        private DbSet<TranslEngEst> item;
         private Context db;
 
         public TranslEngEstRepo(Context context)
